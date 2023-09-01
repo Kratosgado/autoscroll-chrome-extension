@@ -8,9 +8,29 @@
    <script src="scripts/content.js"></script>
 </head>
 <body>
-   <button
-    id="startScroll",
-    onclick="scroll()"
-    >Start Scrolling</button>
+   <label for="scrollTimeStart">Scroll Time Start(seconds): </label>
+   <input type="number" id="scrollTimeStart" name="scrollTimeStart" value="10">
+   <br>
+   <label for="scrollTimeEnd">Scroll Time End(seconds): </label>
+   <input type="number" id="scrollTimeEnd" name="scrollTimeEnd" value="20">
+   <br>
+
+   <label for="tabsMin">Tabs Min: </label>
+   <input type="number" id="tabsMin" name="tabsMin" value="1" min="1">
+   <br>
+
+   <label for="tabsMax">Tabs Max: </label>
+   <input type="number" id="tabsMax" name="tabsMax" value="5" min="1">
+   <br>
+
+   <label subpagesMin="subpagesMin">Subpages Min: </label>
+   <input type="number" id="subpagesMin" name="subpagesMin" value="1" min="1">
+   <br>
+
+   <label for="subpagesMax">Subpages Max: </label>
+   <input type="number" id="subpagesMax" name="subpagesMax" value="5" min="1">
+   <br>
+
+   <button id="startScroll">Start Scrolling</button>
 </body>
 </html>

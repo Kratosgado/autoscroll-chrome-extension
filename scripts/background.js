@@ -1,9 +1,12 @@
 
+chrome.action.onClicked.addListener((tab) => {
+   chrome.scripting.executeScript({
+      target:  {tabId: tab.id },
+      function: openPopup
+   })
+})
 
-chrome.action.onClicked.addListener(
-   function (tab) {
-      chrome.tabs.execute({
-         file: 'content.js'
-      })
-   }
-)
+
+chrome.scripting.registerServiceWorker({
+   script: { src: 'backgroundServiceWorker.js' }
+});
