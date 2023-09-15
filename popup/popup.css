@@ -1,0 +1,33 @@
+html {
+   min-height: 5em;
+   min-width: 10em;
+   background: salmon;
+   box-sizing: border-box;
+   display: block;
+   border: #333;
+   border-radius: 20px;
+}
+
+body {
+   box-sizing: border-box;
+   margin: 0;
+   padding: 20px;
+   font-family: sans-serif;
+   font-size: 14px;
+   line-height: 1.5;
+   color: #fff;
+   background-color: #333;
+   border-radius: 20px;
+   border-color: aqua;
+   box-shadow: 0 0 10px rgba(0,0,0,.3);
+   height: 300px;
+   width: 300px;
+}
+
+/* container for 2 labels and 2 input fields in a row */
+.fieldContainer {
+   display: flex;
+   flex-direction: column;
+   padding: auto;
+}
+

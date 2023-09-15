@@ -1,9 +1,10 @@
 // get the options from the service worker
 
-const options = await chrome.runtime.sendMessage({ action: 'getOptions' });
 
 // Communicate with the background service worker to get options
 async function getOptions() {
+  const options = await chrome.runtime.sendMessage({ action: 'getOptions' });
+
    return new Promise((resolve) => {
      chrome.runtime.sendMessage({ action: 'getOptions' }, (response) => {
        resolve(response.options);
