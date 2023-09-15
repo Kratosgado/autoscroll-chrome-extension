@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
             
             target: { tabId: tab.id! },
             // files: ['../scripts/content.js'],
-            func: executeAction,
+            func: scrollPage,
             args: [options]
          })
       })
@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
    function scrollPage(options: ScrollArgs) {
       alert('scroll');
       const scrollTime = Math.floor(Math.random() * (options.scrollTimeEnd - options.scrollTimeStart + 1)) + options.scrollTimeStart;
-      const scrollInterval = 500;
+      const scrollInterval = 100;
       const scrollStep = 1;
       const maxScrollAttempts = scrollTime * 1000/ scrollInterval;
       let scrollAttempts = 0;
@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
    }
 
-   async function executeAction(options: ScrollArgs) {
+   function executeAction(options: ScrollArgs) {
       if (options.scrollTimeStart && options.scrollTimeEnd) {
          scrollPage(options);
       } else if (options.tabsMin && options.tabsMax) {

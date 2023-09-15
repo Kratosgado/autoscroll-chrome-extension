@@ -33,8 +33,8 @@ document.addEventListener("DOMContentLoaded", function () {
         alert('scroll');
         var scrollTime = Math.floor(Math.random() * (options.scrollTimeEnd - options.scrollTimeStart + 1)) + options.scrollTimeStart;
         var scrollInterval = 100;
-        var scrollStep = 5;
-        var maxScrollAttempts = scrollTime * 1000 / scrollStep;
+        var scrollStep = 1;
+        var maxScrollAttempts = scrollTime * 1000 / scrollInterval;
         var scrollAttempts = 0;
         var interval = setInterval(function () {
             window.scrollBy(0, scrollStep);
