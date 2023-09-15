@@ -1,3 +1,4 @@
+
 // Add an event listener for DOMContentLoaded
 document.addEventListener('DOMContentLoaded', function () {
   // Select the button element by its ID
