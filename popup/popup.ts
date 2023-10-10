@@ -1,3 +1,4 @@
+
 interface ScrollArgs {
    scrollTimeStart: number;
    scrollTimeEnd: number;
@@ -36,19 +37,18 @@ document.addEventListener("DOMContentLoaded", () => {
             
             target: { tabId: tab.id! },
             // files: ['../scripts/content.js'],
-            func: scrollPage,
-            args: [options]
+            func: executeAction,
+            args: [tab, options]
          })
       })
    });
    
 // perform scrolling
-   function scrollPage(options: ScrollArgs) {
-      alert('scroll');
+   function scrollPage(tab: chrome.tabs.Tab, options: ScrollArgs) {
       const scrollTime = Math.floor(Math.random() * (options.scrollTimeEnd - options.scrollTimeStart + 1)) + options.scrollTimeStart;
       const scrollInterval = 100;
       const scrollStep = 1;
-      const maxScrollAttempts = scrollTime * 1000/ scrollInterval;
+      const maxScrollAttempts = 1000;
       let scrollAttempts = 0;
 
       const interval = setInterval(() => {
@@ -57,38 +57,56 @@ document.addEventListener("DOMContentLoaded", () => {
 
          if (scrollAttempts >= maxScrollAttempts) {
             clearInterval(interval);
-            visitSubPages(options);
+            // closeTab(tab.id!);
+            visitSubPages(tab, options);
          }
       })
    }
 
-   function visitSubPages(options: ScrollArgs) {
+   function visitSubPages(tab: chrome.tabs.Tab, options: ScrollArgs) {
       const subpagesToVisit = Math.floor(Math.random() * (options.subpagesMax - options.subpagesMin + 1)) + options.subpagesMin;
 
       for (let index = 0; index < subpagesToVisit; index++) {
-         const subpageUrl = `${window.location.origin}/subpage${index}.html`;
+         const subpageUrl = (getSubpagesUrl())[index];
          setTimeout(() => {
-            window.open(subpageUrl, '_blank');
-         }, index * 1000);
+            chrome.tabs.create({url: subpageUrl});
+         }, index * 5000);
 
          setTimeout(() => {
-            clostTab();
-         }, subpagesToVisit * 1000);
+            closeTab(tab.id!);
+         }, subpagesToVisit * 5000);
          
       }
    }
 
-   function executeAction(options: ScrollArgs) {
+   function executeAction(tab: chrome.tabs.Tab, options: ScrollArgs) {
       if (options.scrollTimeStart && options.scrollTimeEnd) {
-         scrollPage(options);
+         scrollPage(tab, options);
       } else if (options.tabsMin && options.tabsMax) {
-         visitSubPages(options);
+         visitSubPages(tab, options);
       }
    }
 
-   function clostTab(){
-      chrome.runtime.sendMessage({ action: 'closeTab' });
+   function closeTab(tabId: number){
+      chrome.tabs.remove(tabId);
    }
-// open
+
+   function getSubpagesUrl(): string[] {
+      // Get all of the links on the page.
+      const links = document.querySelectorAll("a");
+    
+      // Create an array to store the subpage URLs.
+      const subpagesUrl: string[] = [];
+    
+      // Iterate through the links and filter out the subpages.
+      links.forEach((link) => {
+        if (link.href.startsWith(window.location.origin)) {
+          subpagesUrl.push(link.href);
+        }
+      });
+    
+      // Return the URLs of the subpages.
+      return subpagesUrl;
+    }
 });
 

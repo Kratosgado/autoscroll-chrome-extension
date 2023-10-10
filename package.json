@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@types/chrome": "^0.0.246",
+    "@types/es6-promise": "^3.3.0",
     "chrome-types": "^0.1.231"
   }
 }

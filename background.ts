@@ -20,6 +20,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       };
       sendResponse({ options });
    }
+   if (request.action === 'closeTab') {
+      alert(`closing tab with id: ${sender.tab?.id}`);
+      chrome.tabs.remove(sender.tab?.id!);
+   }
 });
 
 // chrome.action.onClicked.addListener((tab) => {

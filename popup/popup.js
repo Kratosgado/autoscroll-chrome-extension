@@ -23,53 +23,67 @@ document.addEventListener("DOMContentLoaded", function () {
             chrome.scripting.executeScript({
                 target: { tabId: tab.id },
                 // files: ['../scripts/content.js'],
-                func: scrollPage,
-                args: [options]
+                func: executeAction,
+                args: [tab, options]
             });
         });
     });
     // perform scrolling
-    function scrollPage(options) {
-        alert('scroll');
+    function scrollPage(tab, options) {
         var scrollTime = Math.floor(Math.random() * (options.scrollTimeEnd - options.scrollTimeStart + 1)) + options.scrollTimeStart;
         var scrollInterval = 100;
         var scrollStep = 1;
-        var maxScrollAttempts = scrollTime * 1000 / scrollInterval;
+        var maxScrollAttempts = 1000;
         var scrollAttempts = 0;
         var interval = setInterval(function () {
             window.scrollBy(0, scrollStep);
             scrollAttempts++;
             if (scrollAttempts >= maxScrollAttempts) {
                 clearInterval(interval);
-                visitSubPages(options);
+                // closeTab(tab.id!);
+                visitSubPages(tab, options);
             }
         });
     }
-    function visitSubPages(options) {
+    function visitSubPages(tab, options) {
         var subpagesToVisit = Math.floor(Math.random() * (options.subpagesMax - options.subpagesMin + 1)) + options.subpagesMin;
         var _loop_1 = function (index) {
-            var subpageUrl = "".concat(window.location.origin, "/subpage").concat(index, ".html");
+            var subpageUrl = (getSubpagesUrl())[index];
             setTimeout(function () {
-                window.open(subpageUrl, '_blank');
-            }, index * 1000);
+                chrome.tabs.create({ url: subpageUrl });
+            }, index * 5000);
             setTimeout(function () {
-                clostTab();
-            }, subpagesToVisit * 1000);
+                closeTab(tab.id);
+            }, subpagesToVisit * 5000);
         };
         for (var index = 0; index < subpagesToVisit; index++) {
             _loop_1(index);
         }
     }
-    function executeAction(options) {
+    function executeAction(tab, options) {
         if (options.scrollTimeStart && options.scrollTimeEnd) {
-            scrollPage(options);
+            scrollPage(tab, options);
         }
         else if (options.tabsMin && options.tabsMax) {
-            visitSubPages(options);
+            visitSubPages(tab, options);
         }
     }
-    function clostTab() {
-        chrome.runtime.sendMessage({ action: 'closeTab' });
+    function closeTab(tabId) {
+        chrome.tabs.remove(tabId);
+    }
+    function getSubpagesUrl() {
+        // Get all of the links on the page.
+        var links = document.querySelectorAll("a");
+        // Create an array to store the subpage URLs.
+        var subpagesUrl = [];
+        // Iterate through the links and filter out the subpages.
+        links.forEach(function (link) {
+            if (link.href.startsWith(window.location.origin)) {
+                subpagesUrl.push(link.href);
+            }
+        });
+        // Return the URLs of the subpages.
+        return subpagesUrl;
     }
     // open
 });
