@@ -1,11 +1,3 @@
-
-chrome.action.onClicked.addListener((tab) => {
-   chrome.scripting.executeScript({
-      target: { tabId: tab.id! },
-      files: ['scripts/content.ts'],
-   });
-});
-
 // listen for message request and return options
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
    if (request.action === 'getOptions') {
@@ -25,3 +17,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       chrome.tabs.remove(sender.tab?.id!);
    }
 });
+
+chrome.runtime.onMessage.addListener((message, sender) => {
+   if (sender.tab && message.subpageUrls) {
+      const subpages = message.subpagesUrls;
+      alert("recieved: "+subpages);
+   } else {
+      alert("nothon");
+   }
+})

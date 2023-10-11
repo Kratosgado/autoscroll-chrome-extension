@@ -1,4 +1,4 @@
-
+// import axios from "axios";
 interface ScrollArgs {
    scrollTimeStart: number;
    scrollTimeEnd: number;
@@ -33,12 +33,13 @@ document.addEventListener("DOMContentLoaded", () => {
       // execute the code with the options
       chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
          const tab = tabs[0];
+         alert("activating");
          chrome.scripting.executeScript({
             
             target: { tabId: tab.id! },
-            // files: ['../scripts/content.js'],
-            func: executeAction,
-            args: [tab, options]
+            files: ["../scripts/content.js"],
+            // func: executeAction,
+            // args: [tab, options]
          })
       })
    });
@@ -63,11 +64,12 @@ document.addEventListener("DOMContentLoaded", () => {
       })
    }
 
-   function visitSubPages(tab: chrome.tabs.Tab, options: ScrollArgs) {
+   async function visitSubPages(tab: chrome.tabs.Tab, options: ScrollArgs) {
       const subpagesToVisit = Math.floor(Math.random() * (options.subpagesMax - options.subpagesMin + 1)) + options.subpagesMin;
 
       for (let index = 0; index < subpagesToVisit; index++) {
-         const subpageUrl = (getSubpagesUrl())[index];
+         // const subpageUrl = (await getSubpagesUrl(tab.url!))[index];
+         const subpageUrl = "google.com";
          setTimeout(() => {
             chrome.tabs.create({url: subpageUrl});
          }, index * 5000);
@@ -91,22 +93,18 @@ document.addEventListener("DOMContentLoaded", () => {
       chrome.tabs.remove(tabId);
    }
 
-   function getSubpagesUrl(): string[] {
-      // Get all of the links on the page.
-      const links = document.querySelectorAll("a");
-    
-      // Create an array to store the subpage URLs.
-      const subpagesUrl: string[] = [];
-    
-      // Iterate through the links and filter out the subpages.
-      links.forEach((link) => {
-        if (link.href.startsWith(window.location.origin)) {
-          subpagesUrl.push(link.href);
-        }
-      });
-    
-      // Return the URLs of the subpages.
-      return subpagesUrl;
-    }
-});
+   // async function getSubpagesUrl(siteUrl: string): Promise<string[]> {
+   //    alert(window.location.origin);
+   //    alert(siteUrl);
+   //    // const response = await axios.get(window.location.origin);
+   //    const html = response.data;
+   //    // Get all of the links on the page.
+   //    const links:URL[] = html.querySelectorAll("a");
 
+   //    // Filter out the links that are not subpages.
+   //    const subpagesUrl = links.filter((link) => link.href.startsWith(siteUrl));
+
+   //    // Return the URLs of the subpages.
+   //    return subpagesUrl.map((link) => link.href);
+   //  }
+});
