@@ -85,5 +85,4 @@ document.addEventListener("DOMContentLoaded", function () {
         // Return the URLs of the subpages.
         return subpagesUrl;
     }
-    // open
 });

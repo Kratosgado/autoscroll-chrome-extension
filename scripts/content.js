@@ -18,7 +18,7 @@ function scrollPage(options) {
         // }
         if (scrollAttempts >= maxScrollAttempts) {
             clearInterval(interval);
-            window.close();
+            clostTab();
             visitSubPages(options);
         }
     });
