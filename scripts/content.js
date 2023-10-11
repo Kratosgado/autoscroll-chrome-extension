@@ -4,7 +4,6 @@ function extractSubpagesUrls() {
         .filter(function (link) { return link.href.startsWith(window.location.origin); })
         .map(function (link) { return link.href; });
     // send the subpage urls back to the extension
-    alert("sending subpages: " + subPagesUrls);
+    alert(subPagesUrls[0]);
     chrome.runtime.sendMessage({ subPagesUrls: subPagesUrls });
 }
-extractSubpagesUrls();
