@@ -1,6 +1,5 @@
 // listen for message request and return options
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-    var _a, _b;
     if (request.action === 'getOptions') {
         // simulate getting options
         var options = {
@@ -14,8 +13,8 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         sendResponse({ options: options });
     }
     if (request.action === 'closeTab') {
-        alert("closing tab with id: ".concat((_a = sender.tab) === null || _a === void 0 ? void 0 : _a.id));
-        chrome.tabs.remove((_b = sender.tab) === null || _b === void 0 ? void 0 : _b.id);
+        alert("closing tab with id: ");
+        chrome.tabs.remove(sender.tab.id);
     }
 });
 chrome.runtime.onMessage.addListener(function (message, sender) {
