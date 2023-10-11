@@ -23,11 +23,6 @@
          "128": "images/icon-128.png"
        }
    },
-   "permissions": ["activeTab", "scripting", "tabs"],
-   "content_scripts": [
-      {
-         "matches": ["<all_urls>"],
-         "js": ["scripts/content.js"]
-      }
-   ]
+   "permissions": ["activeTab", "scripting", "tabs"]
+
 }

@@ -12,14 +12,21 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         };
         sendResponse({ options: options });
     }
-    if (request.action === 'closeTab') {
-        alert("closing tab with id: ");
+    if (request === 'closeTab') {
         chrome.tabs.remove(sender.tab.id);
     }
-});
-chrome.runtime.onMessage.addListener(function (message, sender) {
-    if (sender.tab && message.subpageUrls) {
-        var subpages = message.subpagesUrls;
-        alert("recieved: " + subpages);
+
+    if (request.message === 'scroll') {
+        console.log('gotten');
+
+        chrome.scripting.registerContentScripts([{
+            id: "session-script",
+            js: ["auto.js"],
+            persistAcrossSessions: false,
+            // matches: ["*://example.com/*"],
+            runAt: "document_start",
+        }])
+        .then(() => console.log("registration complete"))
+        .catch((err) => console.warn("unexpected error", err))
     }
 });

@@ -18,7 +18,6 @@ function scrollPage(options) {
         scrollAttempts++;
         if (scrollAttempts >= maxScrollAttempts) {
             clearInterval(interval);
-            // closeTab(tab.id!);
             visitSubPages(options);
         }
     });
@@ -27,7 +26,6 @@ function visitSubPages(options) {
     var subpagesToVisit = Math.floor(Math.random() * (options.subpagesMax - options.subpagesMin + 1)) + options.subpagesMin;
 
     const subpages = extractSubpagesUrls();
-    console.log("subpages: ", subpages);
     for (var index = 0; index < subpagesToVisit; index++){
         const subpageUrl = subpages[ index ];
         setTimeout(function () {
@@ -48,9 +46,7 @@ function executeAction(options) {
     }
 }
 function closeTab() {
-    chrome.tabs.query({ active: true }, (tabs) => {
-        chrome.tabs.remove(tabs[0].id);
-    })
+    chrome.runtime.sendMessage("closeTab");
 }
 function extractSubpagesUrls() {
     var links = document.querySelectorAll("a");
@@ -60,17 +56,3 @@ function extractSubpagesUrls() {
     // send the subpage urls back to the extension
     return subPagesUrls;
 }
-
-executeAction(options) 
-// async function getSubpagesUrl(siteUrl) {
-//    alert(window.location.origin);
-//    alert(siteUrl);
-//    const response = await axios.get(window.location.origin);
-//    const html = response.data;
-//    // Get all of the links on the page.
-//    const links = html.querySelectorAll("a");
-//    // Filter out the links that are not subpages.
-//    const subpagesUrl = links.filter((link) => link.href.startsWith(siteUrl));
-//     // Return the URLs of the subpages.
-//    return subpagesUrl.map((link) => link.href);
-//  }
