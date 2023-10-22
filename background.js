@@ -1,25 +1,27 @@
+
 // listen for message request and return options
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-    if (request.action === 'getOptions') {
-        // simulate getting options
-        var options = {
-            scrollTimeStart: 10,
-            scrollTimeEnd: 20,
-            tabsMin: 1,
-            tabsMax: 3,
-            subpagesMin: 1,
-            subpagesMax: 5,
-        };
-        sendResponse({ options: options });
-    }
-    if (request === 'closeTab') {
+chrome.runtime.onMessage.addListener(async function (message, sender, sendResponse) {
+    
+    if (message.action === 'closeTab') {
         chrome.tabs.remove(sender.tab.id);
     }
 
-    if (request.message === 'scroll') {
+    if (message.action === 'startScroll') { 
+        // Send a message to the content script to trigger scrolling
+        chrome.tabs.sendMessage(sender.tab.id, { action: 'scroll', options: message.options });
+    }
+
+    if (message.action === "openSubPage") {
+        // create a new tab
+         chrome.tabs.create({ url: message.url }, async function (tab) {
+            chrome.tabs.sendMessage(tab.id, {action: "scroll", options: message.options})
+        })
+    }
+
+    if (message.action === 'scroller') {
         console.log('gotten');
 
-        chrome.scripting.registerContentScripts([{
+        await chrome.scripting.registerContentScripts([{
             id: "session-script",
             js: ["auto.js"],
             persistAcrossSessions: false,
