@@ -31,7 +31,8 @@ function visitSubPages(options) {
         const randomSubpageIndex = Math.floor(Math.random() * subpages.length);
         const subpageUrl = subpages[ randomSubpageIndex ];
         setTimeout(async function () {
-            await chrome.runtime.sendMessage({action: "openSubPage", url: subpageUrl, options: options})
+            // Open the subpage in a new tab
+            await chrome.runtime.sendMessage({ action: "openSubPage", url: subpageUrl, options: options });
         }, index * 5000);
         setTimeout(function () {
             closeTab();
@@ -64,7 +65,6 @@ function executeAction(options) {
         visitSubPages(options);
     }
 }
-
 
 
 chrome.runtime.onMessage.addListener(function (message) {
